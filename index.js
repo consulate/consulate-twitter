@@ -15,11 +15,9 @@ module.exports = function(options, getUserByTwitterOrCreate) {
   var path = options.path || '/login/twitter';
   delete options.path;
 
-  debug('registering twitter passport strategy with options', options)
-
-  passport.use(new TwitterStrategy(options, getUserByTwitterOrCreate));
-
   return function(app) {
+    debug('registering twitter passport strategy with options', options);
+    app.register(new TwitterStrategy(options, getUserByTwitterOrCreate));
     app.get(path, app.authenticate('twitter'), app.viewCallback('login'));
   };
 };
